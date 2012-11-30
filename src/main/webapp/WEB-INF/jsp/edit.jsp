@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib tagdir="/WEB-INF/tags/widget" prefix="widget"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html>
@@ -12,19 +13,39 @@
 <body>
 	<div class="container">
 		<widget:header />
-		<c:if test="${not empty flashMessage}">
-			<div class="alert">${flashMessage}</div>
-		</c:if>
-		<c:if test="${not empty flashDeleteMessage}">
-			<div class="alert">${flashDeleteMessage}</div>
-		</c:if>
 		<div class="row">
 			<div class="span9">
-				<legend>All tasks</legend>
+				<legend>Edit</legend>
 
-				<c:forEach var="task" items="${tasks}">
-					<widget:task task="${task}" />
-				</c:forEach>
+				<form:form action="/edit" method="post" commandName="task">
+					<form:hidden path="id" />
+					<label for="title">
+						Title
+					</label>
+					<form:input id="title" path="title" class="span9" />
+					<label for="date">
+						Date
+						<form:errors path="date" cssStyle="color: red" >
+							La date n'a pas le bon format
+						</form:errors>
+					</label>
+					<div class="input-append">
+						<form:input id="date" path="date" class="span3" />
+						<span class="add-on">dd/MM/yyyy</span>
+					</div>
+					<label for="tags">
+						Tags
+					</label> 
+					<form:input id="tags" path="tags" class="span9" />
+					<label for="text">
+						Text
+					</label>
+					<form:textarea id="text" path="text" cols="60" rows="10" class="span9" />
+					</textarea>
+					<button type="submit" class="btn">
+						${empty task.id ? 'Add' : 'Update'}
+					</button>
+				</form:form>
 
 			</div>
 			<div class="span3">
